@@ -1,0 +1,14 @@
+﻿
+.body-Text, p, .section-heading ,h1{
+    color: white;
+}
+button {
+    border-radius: 20px;
+}
+
+h2 {
+ font-style:italic;
+ font-family:'Times New Roman', Times, serif;
+}
+
+

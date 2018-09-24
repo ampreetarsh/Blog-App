@@ -3,72 +3,96 @@
 @{
     ViewBag.Title = "Details";
 }
+<style>
+    .main-body {
+        /*background: url(../imgs/banner-bg.jpg);*/
+        background-color: grey;
+        background-size: 100% 100%;
+    }
+    dt,dd,h2 {
+    color:white;
+    }
+    button {
+     color: white;
+     border-radius:20px;
+    }
 
-<h2>Details</h2>
+</style>
+<body class="main-body">
+    <h2>Details</h2>
 
-<div>
-    <h4>BlogPost</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Created)
-        </dt>
+    <div>
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Created)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Created)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Created)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Updated)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Updated)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Updated)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Updated)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Title)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Title)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Title)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Title)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Slug)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Slug)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Slug)
-        </dd>
+            <dd>
+                @Html.DisplayFor(model => model.Slug)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.Body)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
+            <dd>
+                @Html.Raw(Model.Body)
+            </dd>
 
-        <dt>
-            @Html.DisplayNameFor(model => model.MediaUrl)
-        </dt>
+            <dt>
+                @Html.DisplayNameFor(model => model.MediaUrl)
+            </dt>
 
-        <dd>
-            @Html.DisplayFor(model => model.MediaUrl)
-        </dd>
+            <dd>
+                @if (Model.MediaUrl != null)
+                {
+                    <img class="img-responsive" src="@Model.MediaUrl" alt="">
+                }
 
-        <dt>
-            @Html.DisplayNameFor(model => model.Published)
-        </dt>
+            </dd>
 
-        <dd>
-            @Html.DisplayFor(model => model.Published)
-        </dd>
+            <dt>
+                @Html.DisplayNameFor(model => model.Published)
+            </dt>
 
-    </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+            <dd>
+                @Html.DisplayFor(model => model.Published)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        <button>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        </button>
+        <button>
+            @Html.ActionLink("Back to List", "Index")
+        </button>
+
+    </p>
+</body>

@@ -40,9 +40,8 @@ namespace BlogWebsite.Models
         {
             return new ApplicationDbContext();
         }
+
         public DbSet<BlogPost> Posts { get; set; }
         public DbSet<Comment> Comments { get; set; }
-        public IEnumerable ApplicationUsers { get; internal set; }
-        public IEnumerable BlogPosts { get; internal set; }
     }
 }
