@@ -1,15 +1,13 @@
 ﻿using BlogWebsite.Models;
 using System;
-using System.Collections.Generic;
-using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace BlogWebsite.Controllers
 {
+    [RequireHttps]
     public class CommentsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
@@ -49,7 +47,7 @@ namespace BlogWebsite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,BlogPostId,PostId,AuthorId,Body,Created,Updated,UpdatedReason")] Comment comment)
+        public ActionResult Create([Bind(Include = "Id,BlogPostId,AuthorId,Body,Created,Updated,UpdatedReason")] Comment comment)
         {
             if (ModelState.IsValid)
             {
@@ -64,6 +62,7 @@ namespace BlogWebsite.Controllers
         }
 
         // GET: Comments/Edit/5
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -75,8 +74,6 @@ namespace BlogWebsite.Controllers
             {
                 return HttpNotFound();
             }
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
-            ViewBag.BlogPostId = new SelectList(db.Posts, "Id", "Title", comment.BlogPostId);
             return View(comment);
         }
 
@@ -85,20 +82,23 @@ namespace BlogWebsite.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,BlogPostId,PostId,AuthorId,Body,Created,Updated,UpdatedReason")] Comment comment)
+        [Authorize(Roles = "Admin,Moderator")]
+        public ActionResult Edit([Bind(Include = "Id,Body,UpdateReason")] Comment comment)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(comment).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
+                var commentDb = db.Comments.Where(p => p.Id == comment.Id).FirstOrDefault();
+                commentDb.Updated = DateTime.Now;
+                commentDb.Body = comment.Body;
+                commentDb.UpdatedReason = comment.UpdatedReason; db.SaveChanges();
+                return RedirectToAction("Details", "BlogPosts", new { slug = commentDb.BlogPost.Slug });
             }
-            ViewBag.AuthorId = new SelectList(db.Users, "Id", "FirstName", comment.AuthorId);
-            ViewBag.BlogPostId = new SelectList(db.Posts, "Id", "Title", comment.BlogPostId);
+           
             return View(comment);
         }
 
         // GET: Comments/Delete/5
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -116,12 +116,14 @@ namespace BlogWebsite.Controllers
         // POST: Comments/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Moderator")]
         public ActionResult DeleteConfirmed(int id)
         {
             Comment comment = db.Comments.Find(id);
+            var slug = comment.BlogPost.Slug;
             db.Comments.Remove(comment);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "BlogPosts", new { slug });
         }
 
         protected override void Dispose(bool disposing)

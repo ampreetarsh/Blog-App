@@ -1,4 +1,6 @@
-﻿@{
+﻿
+
+@{
     ViewBag.Title = "Home Page";
     Layout = null;
 }
@@ -70,6 +72,9 @@
                     <li>
                         @Html.ActionLink("Posts", "", "BlogPosts")
                     </li>
+                    <li>
+                        @Html.ActionLink("Contact", "Contact","Home")
+                    </li>
                 </ul>
             </div>
             <!-- /.navbar-collapse -->
@@ -86,9 +91,8 @@
                     <div class="intro-message">
                         <h1>Hi, I am Arshpreet.</h1>
                         <h1>Welcome to my Blog Posts.</h1>
-                        <h3>Login with Social Media</h3>
                         <hr class="intro-divider">
-                        <ul class="list-inline intro-social-buttons">
+                        @*<ul class="list-inline intro-social-buttons">
                             <li>
                                 <a href="https://twitter.com/SBootstrap" class="btn btn-default btn-lg"><i class="fa fa-twitter fa-fw"></i> <span class="network-name">Twitter</span></a>
                             </li>
@@ -98,7 +102,7 @@
                             <li>
                                 <a href="#" class="btn btn-default btn-lg"><i class="fa fa-linkedin fa-fw"></i> <span class="network-name">Linkedin</span></a>
                             </li>
-                        </ul>
+                        </ul>*@
                     </div>
                 </div>
             </div>
@@ -184,22 +188,6 @@
             <!-- /.container -->
         </div>*@
     <!-- /.banner -->
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12">
-                    <ul class="list-inline">
-                        <li>
-                            <a href="#">Home</a>
-                        </li>
-                        <li class="footer-menu-divider">&sdot;</li>
-                    </ul>
-                    <p class="copyright text-muted small">Copyright &copy; Arshpreet Kaur</p>
-                </div>
-            </div>
-        </div>
-    </footer>
     <!-- jQuery -->
     <script src="~/Scripts/jquery.js"></script>
     <!-- Bootstrap Core JavaScript -->

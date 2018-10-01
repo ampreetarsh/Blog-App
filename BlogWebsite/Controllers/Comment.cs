@@ -11,7 +11,6 @@ namespace BlogWebsite.Controllers
         public int Id { get; set; }
         public int BlogPostId { get; set; }
         public virtual BlogPost BlogPost { get; set; }
-        public int PostId { get; set; }
         public string AuthorId { get; set; }
         public virtual ApplicationUser Author { get; set; }
         public string Body { get; set; }

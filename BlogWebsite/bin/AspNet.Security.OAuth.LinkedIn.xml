@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AspNet.Security.OAuth.LinkedIn</name>
+    </assembly>
+    <members>
+        <member name="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults">
+            <summary>
+            Default values used by the LinkedIn authentication middleware.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.AuthenticationScheme">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.AuthenticationScheme.Name"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.DisplayName">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.AuthenticationScheme.DisplayName"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.Issuer">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.AuthenticationSchemeOptions.ClaimsIssuer"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.CallbackPath">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.RemoteAuthenticationOptions.CallbackPath"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.AuthorizationEndpoint">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions.AuthorizationEndpoint"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.TokenEndpoint">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions.TokenEndpoint"/>.
+            </summary>
+        </member>
+        <member name="F:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationDefaults.UserInformationEndpoint">
+            <summary>
+            Default value for <see cref="P:Microsoft.AspNetCore.Authentication.OAuth.OAuthOptions.UserInformationEndpoint"/>.
+            Note: the endpoint must follow the LinkedIn convention and contain a '~' to append fields to, if they are specified.
+            See https://developer.linkedin.com/docs/signin-with-linkedin for more information.
+            </summary>
+        </member>
+        <member name="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationOptions">
+            <summary>
+            Defines a set of options used by <see cref="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationHandler"/>.
+            </summary>
+        </member>
+        <member name="P:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationOptions.Fields">
+            <summary>
+            Gets the list of fields to retrieve from the user information endpoint.
+            See https://developer.linkedin.com/docs/fields/basic-profile for more information.
+            </summary>
+        </member>
+        <member name="T:Microsoft.Extensions.DependencyInjection.LinkedInAuthenticationExtensions">
+            <summary>
+            Extension methods to add LinkedIn authentication capabilities to an HTTP application pipeline.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.LinkedInAuthenticationExtensions.AddLinkedIn(Microsoft.AspNetCore.Authentication.AuthenticationBuilder)">
+            <summary>
+            Adds <see cref="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationHandler"/> to the specified
+            <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/> to add the middleware to.</param>
+            <returns>A reference to this instance after the operation has completed.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.LinkedInAuthenticationExtensions.AddLinkedIn(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.Action{AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationOptions})">
+            <summary>
+            Adds <see cref="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationHandler"/> to the specified
+            <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+            </summary>
+            <param name="builder">The <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/> to add the middleware to.</param>
+            <param name="configuration">The delegate used to configure the OpenID 2.0 options.</param>
+            <returns>A reference to this instance after the operation has completed.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.LinkedInAuthenticationExtensions.AddLinkedIn(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.String,System.Action{AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationOptions})">
+            <summary>
+            Adds <see cref="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationHandler"/> to the specified
+            <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+            </summary>
+            <param name="builder">The authentication builder.</param>
+            <param name="scheme">The authentication scheme associated with this instance.</param>
+            <param name="configuration">The delegate used to configure the LinkedIn options.</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>.</returns>
+        </member>
+        <member name="M:Microsoft.Extensions.DependencyInjection.LinkedInAuthenticationExtensions.AddLinkedIn(Microsoft.AspNetCore.Authentication.AuthenticationBuilder,System.String,System.String,System.Action{AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationOptions})">
+            <summary>
+            Adds <see cref="T:AspNet.Security.OAuth.LinkedIn.LinkedInAuthenticationHandler"/> to the specified
+            <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>, which enables LinkedIn authentication capabilities.
+            </summary>
+            <param name="builder">The authentication builder.</param>
+            <param name="scheme">The authentication scheme associated with this instance.</param>
+            <param name="caption">The optional display name associated with this instance.</param>
+            <param name="configuration">The delegate used to configure the LinkedIn options.</param>
+            <returns>The <see cref="T:Microsoft.AspNetCore.Authentication.AuthenticationBuilder"/>.</returns>
+        </member>
+    </members>
+</doc>

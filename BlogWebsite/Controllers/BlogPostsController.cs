@@ -9,18 +9,47 @@ using System.Web;
 using System.Web.Mvc;
 using BlogWebsite.Helpers;
 using BlogWebsite.Models;
+using PagedList;
+using PagedList.Mvc;
+using System.Data.Entity;
+using Microsoft.AspNet.Identity;
+using System.Net.Mail;
+using System.Web.Configuration;
 
 namespace BlogWebsite.Controllers
 {
+    [RequireHttps]
     public class BlogPostsController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: BlogPosts
-        public ActionResult Index()
+        public ActionResult Index(int? page, string searchString)
         {
-            return View(db.Posts.ToList());
+            //var emailService = new PersonalEmailService();
+            //var mailMessage = new MailMessage(
+            //    WebConfigurationManager.AppSettings["username"],
+            //    WebConfigurationManager.AppSettings["emailto"]);
+            //mailMessage.Body = "This is a test e-mail.";
+            //mailMessage.Subject = "Test e-mail";
+            //emailService.Send(mailMessage);
+            int pageSize = 3; // display three blog posts at a time on this page
+            int pageNumber = (page ?? 1);
+            var postQuery = db.Posts.OrderBy(p => p.Created).AsQueryable();
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                postQuery = postQuery
+                    .Where(p => p.Title.Contains(searchString) ||
+                                p.Body.Contains(searchString) ||
+                                p.Slug.Contains(searchString) ||
+                                p.Comments.Any(t => t.Body.Contains(searchString))
+                           ).AsQueryable();
+            }
+            var postList = postQuery.ToPagedList(pageNumber, pageSize);
+            ViewBag.SearchString = searchString;
+            return View(postList);
         }
+
 
         // GET: BlogPosts/Details/5
         public ActionResult Details(string Slug)
@@ -29,14 +58,46 @@ namespace BlogWebsite.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            BlogPost blogPost = db.Posts.FirstOrDefault(p => p.Slug == Slug);
+            BlogPost blogPost = db.Posts
+                           .Include(p => p.Comments.Select(t => t.Author))
+                           .Where(p => p.Slug == Slug)
+                           .OrderBy(p => p.Id)
+                           .FirstOrDefault();
             if (blogPost == null)
             {
                 return HttpNotFound();
             }
             return View(blogPost);
         }
-
+        // POST: BlogPosts/Details/5
+        [HttpPost]
+        public ActionResult DetailsSlug(string slug, string body)
+        {
+            if (slug == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var blogPost = db.Posts
+               .Where(p => p.Slug == slug)
+               .FirstOrDefault();
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                ViewBag.ErrorMessage = "Comment is required";
+                return View("Details", blogPost);
+            }
+            var comment = new Comment();
+            comment.AuthorId = User.Identity.GetUserId();
+            comment.BlogPostId = blogPost.Id;
+            comment.Created = DateTime.Now;
+            comment.Body = body;
+            db.Comments.Add(comment);
+            db.SaveChanges();
+            return RedirectToAction("Details", new { slug = slug });
+        }
 
         // GET: BlogPosts/Create
         [Authorize(Roles = "Admin")]
@@ -165,7 +226,35 @@ namespace BlogWebsite.Controllers
             db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [HttpPost]
+        [Authorize]
+        public ActionResult CreateComment(string slug, string body)
+        {
+            if (slug == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var blogPost = db.Posts
+               .Where(p => p.Slug == slug)
+               .FirstOrDefault();
+            if (blogPost == null)
+            {
+                return HttpNotFound();
+            }
+            if (string.IsNullOrWhiteSpace(body))
+            {
+                TempData["ErrorMessage"] = "Comment is required";
+                return RedirectToAction("Details", new { slug = slug });
+            }
+            var comment = new Comment();
+            comment.AuthorId = User.Identity.GetUserId();
+            comment.BlogPostId = blogPost.Id;
+            comment.Created = DateTime.Now;
+            comment.Body = body;
+            db.Comments.Add(comment);
+            db.SaveChanges();
+            return RedirectToAction("Details", new { slug = slug });
+        }
         protected override void Dispose(bool disposing)
         {
             if (disposing)

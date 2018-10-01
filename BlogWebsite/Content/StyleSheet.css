@@ -10,5 +10,10 @@ h2 {
  font-style:italic;
  font-family:'Times New Roman', Times, serif;
 }
+.search-btn {
+    padding:20px;
+}
 
-
+.form-control {
+    margin-top: 15px;
+}

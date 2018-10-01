@@ -1,7 +1,13 @@
-﻿@model IEnumerable<BlogWebsite.Controllers.BlogPost>
+﻿@using PagedList;
+@using PagedList.Mvc;
+
+@model IEnumerable<BlogWebsite.Controllers.BlogPost>
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css">
 <link href="~/Content/StyleSheet.css" rel="stylesheet" />
 @{
     ViewBag.Title = "Index";
+    var pagedList = (IPagedList)Model;
+
 }
 <body style="background: url(../imgs/banner-bg.jpg); background-size:100% 100%">
     <h1 style="text-align:center;">Blog Posts</h1>
@@ -12,7 +18,13 @@
             @Html.ActionLink("Create New", "Create")
         </button>
     }
-
+    @using (Html.BeginForm("Index", "BlogPosts", FormMethod.Get))
+    {
+        <input type="text" class="form-control" name="searchString" placeholder="Search for posts" value="@ViewBag.SearchString" />
+        <div class="search-btn">
+        <input type="submit" class="btn btn-primary" style="color:white;" value="Search!" />
+        </div>
+    }
     @foreach (var item in Model)
     {
         <div class="content-section-a">
@@ -27,24 +39,21 @@
                         <h2 class="lead body-Text">
                             @Html.Raw(item.Body)
                         </h2>
-
-                      
-                       
-                    </div>
+         </div>
                     <div style="padding-top:20px;" class="col-lg-5 col-lg-offset-2 col-sm-6">
                         @if (item.MediaUrl != null)
                         {
                             <img class="img-responsive" src="@item.MediaUrl" alt="">
                             @*<p class="body-Text">
-                                @Html.DisplayNameFor(model => model.Created)
-                                <br />
-                                @Html.DisplayFor(modelItem => item.Created)
-                            </p>
-                            <p class="body-Text">
-                                @Html.DisplayNameFor(model => model.Updated)
-                                <br />
-                                @Html.DisplayFor(modelItem => item.Updated)
-                            </p>*@
+                                    @Html.DisplayNameFor(model => model.Created)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.Created)
+                                </p>
+                                <p class="body-Text">
+                                    @Html.DisplayNameFor(model => model.Updated)
+                                    <br />
+                                    @Html.DisplayFor(modelItem => item.Updated)
+                                </p>*@
                         }
                     </div>
                 </div>
@@ -73,69 +82,74 @@
         </div>
     }
 
+    Page @(pagedList.PageCount < pagedList.PageNumber ? 0 : pagedList.PageNumber) of     @pagedList.PageCount
+    @Html.PagedListPager(pagedList, page => Url.Action("Index", new { page, ViewBag.SearchString }))
+
+
+
 </body>
 
-    @*<table class="table">
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Created)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Updated)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Slug)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Body)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.MediaUrl)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Published)
-                </th>
-                <th></th>
-            </tr>
+@*<table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Created)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Updated)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Title)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Slug)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Body)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.MediaUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Published)
+            </th>
+            <th></th>
+        </tr>
 
-        @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Slug)
-                </td>
-                <td>
-                    @Html.Raw(item.Body)
-                </td>
-                <td>
-                    @if (item.MediaUrl != null)
-                    {
+    @foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Created)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Updated)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Slug)
+            </td>
+            <td>
+                @Html.Raw(item.Body)
+            </td>
+            <td>
+                @if (item.MediaUrl != null)
+                {
 
-                        <img class="img-responsive" src="@item.MediaUrl" alt="">
-                    }
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Published)
-                </td>
-                <td>
-                    @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { slug = item.Slug }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                    <img class="img-responsive" src="@item.MediaUrl" alt="">
+                }
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Published)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
+                @Html.ActionLink("Details", "Details", new { slug = item.Slug }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
 
-                </td>
+            </td>
 
-            </tr>
-        }
+        </tr>
+    }
 
-        </table>*@
+    </table>*@

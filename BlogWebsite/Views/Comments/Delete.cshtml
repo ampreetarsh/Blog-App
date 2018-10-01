@@ -28,11 +28,11 @@
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.PostId)
+            @Html.DisplayNameFor(model => model.BlogPostId)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.PostId)
+            @Html.DisplayFor(model => model.BlogPostId)
         </dd>
 
         <dt>
@@ -72,9 +72,8 @@
     @using (Html.BeginForm()) {
         @Html.AntiForgeryToken()
 
-        <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
-        </div>
+    <div class="form-actions no-color">
+        <input type="submit" value="Delete" class="btn btn-default" />
+    </div>
     }
 </div>
